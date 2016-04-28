@@ -13,23 +13,28 @@ def my_reverse(thing)
     thing[-1-num] = vector1
   end
 
-  puts thing
+  return thing
+
 end
 
-my_reverse("whatisthis?")
-
-# def palend (str)
-#   if str == str.reverse
-#     puts "This is a palendrome!"
-#   else
-#     puts str
-#     puts str.reverse
-#     puts "Not a palendrome"
-#   end
-#
-# end
-#
 #   puts "Give me a string"
 #   str = gets
 #
-#   palend(str.chomp)
+# my_reverse(str.chomp)
+
+def palend (str)
+  puts my_reverse(str.downcase.chars)
+  if str == my_reverse(str.downcase.chars)
+    puts "This is a palendrome!"
+  else
+    puts str
+    puts my_reverse(str.downcase.chars)
+    puts "Not a palendrome"
+  end
+
+end
+
+  puts "Give me a string"
+  str = gets
+
+  palend(str.chomp)
