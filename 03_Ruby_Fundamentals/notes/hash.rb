@@ -19,26 +19,36 @@ pokemon = {name: "Pikachu", type: "Electric", level: 20}
 #.values, values_at
 #.has_key?, .has_value?
 
-#length
+#length - find the length
 puts "LENGTH".green
 puts cars.length
 
-#keys
+#keys - return the keys in an array
 puts "KEYS".green
 puts cars.keys
 
-#values_at
+#values_at - return the values in an array
 puts "VALUES".green
 puts cars.values
 
-#merge
+#merge - merge 2 hashes together, if there's duplicate keys take the most recent one, eg. from the second  hashes
 puts "MERGE".green
 puts cars.merge(pokemon)
 
-#has key
+#has key - return true or false depending on if the hash has the key
 puts cars.has_key? :tesla
 puts pokemon.has_value? "Pikachu"
 
-#values at
+#values at - return the value based on the key
 puts "VALUES AT".green
 puts cars.values_at(:tesla, :ford)
+
+#select - return a new hash based on conditions
+puts "SELECT".green
+puts cars.select{|k,v| v[:year] == 1967}
+
+#.to_a - change it to an array
+puts "TO A".green
+puts pokemon.to_a
+
+puts cars[:tesla].length
