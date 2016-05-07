@@ -3,6 +3,13 @@ require 'colorize'
 
 
 #---------------------------Supporting Methods-----------------------------
+#Supporting methods are methods that are or has the potential to be used multiple times, and can be seperated logically from what it's being used for.
+
+
+#YES OR NO METHOD
+#This method simplify asking yes/no questions.
+#It will take the question you want to ask as an argument, and ask this question until a valid answer is given.
+#It will then return true if the answer was yes, and false if the answer was no.
 
 def yes_no (question)
   puts question
@@ -16,6 +23,11 @@ def yes_no (question)
     yes_no(question)
   end
 end
+
+
+
+#PRINT LIST method
+#This method will take an array of cars (hashes), and print each of the car's information in a easy to read format.
 
 def print_list(list)
 
@@ -31,12 +43,16 @@ list.each do |item|
   elsif item[:is_electric] == false
     puts "Fuel: Gasoline"
   else
-    puts "ERROR!!!!!"
+    puts "ERROR!!!!!" #unless our inventory of cars has an error, this should never appear
   end
-  puts " "
+  puts " " #puts a free line for spacing purposes.
   end
 end
 
+
+
+#SELECT CAR BY ID
+#This takes in an ID (integer) and a list of cars, and returns the car (hash) associated with that ID.
 def select_car_by_id(id, cars)
   cars.each do |car|
     if car[:ID] == id
@@ -56,7 +72,10 @@ end
 
 
 #---------------------------Retrive Information-----------------------------
+#These are methods that's used to gather criteria information from the user at the beginning.
 
+#GET YEAR
+#This makes useres enter a valid year (greater than 0 but less than the 2018 since that's not made yet)
 def get_year
   puts "What is the lowest year?"
   lowest_year = gets.strip.to_i
@@ -69,6 +88,11 @@ def get_year
     return lowest_year
   end
 end
+
+
+
+#GET PRICE
+#This grabs the price ceiling the user is willing to pay, can't be less or equal to 0
 
 def get_price
 
@@ -84,6 +108,11 @@ def get_price
   end
 
 end
+
+
+
+#IS_ELECTRIC
+#This gets the fueling preference from the user, they can choose to only see electric cars, gasoline, or both.
 
 def is_electric
 
@@ -117,39 +146,43 @@ end
 
 
 #---------------------------------Matching---------------------------------
+#These methods are related to the function of matching available cars based on the user's criteria and preferences.
+
+
+#MATCH
+#This method takes a hash of user criteria gathered, as well as the array of all the cars. #It then extrat the information from then and call a bunch of matching methods to obtain arrays of cars that match the criteria that the users put.
 
 def match (user_criteria, car_lot)
   year = user_criteria[:lowest_year]
   price = user_criteria[:price]
   preference = user_criteria[:electric_pref]
 
+  #obtains all cars that satisfy the year/price/elec/color criteria
   all_matches_year =  match_year(year, car_lot)
   all_matches_price = match_price(price, car_lot)
   all_matches_elec = match_electric(preference, car_lot)
   all_matches_color= car_lot
 
 
-  #puts "Matched year:".green
-  #print_list(all_matches_year)
-  #puts "Matched price:".green
-  #print_list(all_matches_price)
-  #puts "Matched elec:".green
-  #print_list(all_matches_elec)
   puts "...... searching........"
   sleep(0.5)
   puts "...... searching........"
   sleep(0.5)
   puts "...... searching........"
   sleep(0.5)
+
+  #calls the intersec method to get an array of cars that satify all criteria
   all = intersec(all_matches_year, all_matches_price, all_matches_elec, all_matches_color, car_lot, "none")
 
+  #Displays the mached cars to the user
   puts "There are #{all.length} cars that matches your criteria."
   print_list(all)
 
+  #This checks to see if there are any cars at all, if so we will ask the user to buy one, if not it calls the sales department method to try to find some flexibility in the user's preferences.
   if all.length == 0
     sales_department(all_matches_year, all_matches_price, all_matches_elec, all_matches_color, car_lot)
   else
-    sale_status = ask_for_sale(all)
+    sale_status = ask_for_sale(all) #ask for sale will return if a sale is made or not
 
     if sale_status == "sale"
       puts "Thanks for shopping!"
@@ -157,19 +190,28 @@ def match (user_criteria, car_lot)
       sales_department(all_matches_year, all_matches_price, all_matches_elec, all_matches_color, car_lot)
 
     else
-      puts "ERROR!!!"
+      puts "ERROR!!!" #this should never happen, if it does there's a problem in the code
     end
   end
 
 end
 
 
+
+
+
+#FLEX MATCH
+#This method is used to determine if the user has any flexibility in their criteria
+#It will ask a series of questions about the user's flexibility and then call the intersec method to get an array of matched cars with the new flexibility in mind.
 def flex_match(year, price, elec, color, car_lot)
   flex_color = yes_no("Do you have any flexiblity in the color of the car?")
   flex_elec = yes_no("What about the fuel source?")
   flex_year = yes_no("Do you have flexiblity on the year the car was made?")
   flex_price = yes_no("Finally, do you have any flexibility on price?")
 
+
+  #The intersec method will take a flex parameter, which it will use to modify its output of the cars that fits the user's crteria based on any flexibility.
+  #The following if statements are building that flex parameter which is an array of qualities that the user is flexibile with.
   flex = []
   if flex_color == true
     flex.push("color")
@@ -187,6 +229,7 @@ def flex_match(year, price, elec, color, car_lot)
     flex.push("year")
   end
 
+  #This calls the intersec method while passing in the flex array we just built.
   new_match = intersec(year, price, elec, color, car_lot, flex)
   puts "Here are some new matches based on your flexibility:"
   print_list(new_match)
@@ -195,9 +238,16 @@ def flex_match(year, price, elec, color, car_lot)
 end
 
 
+
+#INTERSEC
+#The intersec method takes in a series of arrays (of cars) and find the intersection of them (cars that appear in all arrays) to output an array of cars that fits all of the user's criteria.
+#It has a flex feature, where it will take in an array of features the user is flexible with, and will disregard those features while finding the match.
+
+
+#The way the flex feature works is by replacing a feature, like color, with all, which is a list of all cars in the inventory. This will make it so that the method thinks the user is ok with all colors.
 def intersec (year, price, elec, color, all, flex)
   if flex.include? "color"
-    color = all
+    color = all #replacing color, a list of cars that satisfy the user's color criteria. with the entire inventory of cars so that this feature is disregarded in the match.
   end
 
   if flex.include? "elec"
@@ -212,10 +262,16 @@ def intersec (year, price, elec, color, all, flex)
     year = all
   end
 
-  intersec = year & price & elec & color
+  intersec = year & price & elec & color #finding the intersection of all these arrays.
 
 end
 
+
+
+
+
+#MATCH YEAR
+#This method outputs an array of cars that matches the user's year preferences.
 def match_year (year, car_lot)
   valid_cars = []
   car_lot.each do |car|
@@ -226,7 +282,8 @@ def match_year (year, car_lot)
   return valid_cars
 end
 
-
+#MATCH PRICE
+#This method outputs an array of cars that matches the user's price preferences.
 def match_price (price, car_lot)
   valid_cars = []
   car_lot.each do |car|
@@ -237,7 +294,8 @@ def match_price (price, car_lot)
   return valid_cars
 end
 
-
+#MATCH ELECTRIC
+#This method outputs an array of cars that matches the user's fuel preferences.
 def match_electric (preference, car_lot)
   valid_cars=[]
   case preference
@@ -270,19 +328,29 @@ end
 
 
 #----------------------------------Sales----------------------------------
+#These methods are related to the selling function after the cars are matched.
+
+
+
+#ASK FOR SALE
+#This method asks if the user would like to buy a car after a list of matched cars for the user is generated. It will return if the sale is made.
+
 def ask_for_sale(cars)
 
 
   buy_decision = yes_no("Would you like to buy one of these cars? (yes/no)")
 
   if buy_decision == true
-      return get_id(cars)
+      return get_id(cars) #does not return sale because there is a final confirmation in the get_id method.
 
   else
     return "no sale"
 
   end
 end
+
+
+
 
 def get_id(cars)
   car_ids = []
