@@ -351,7 +351,8 @@ end
 
 
 
-
+#GET ID
+#This method will ask you for the ID of the car you want to buy and sell it to you. It will return if a sale is made or not by returning "sale" or "no sale"
 def get_id(cars)
   car_ids = []
   cars.each do |car|
@@ -374,11 +375,13 @@ def get_id(cars)
     puts "So the #{the_car[:color]} #{the_car[:name]} #{the_car[:model]} using #{fuel} fuel?"
     puts "That will be $#{the_car[:price]} please!"
     final_confirm = yes_no("Are you sure you want to buy this car? (yes/no)")
+
     if final_confirm == true
       puts "Thanks you for buying the #{the_car[:color]} #{the_car[:name]} #{the_car[:model]} using #{fuel} fuel!"
       puts "I am now $#{the_car[:price]} richer!"
       return "sale"
     else
+      puts "oh... ok then... (I was so close!!!! T_T)"
       return "no sale"
     end
   else
@@ -389,7 +392,8 @@ end
 
 
 
-
+#SALES DEPARTMENT
+#This will ask the user if they're willing to accept flexibility in their criteria, and will call the appropriate methods if the user agrees.
 def sales_department(year, price, elec, color, car_lot)
   puts "Wait! We might have more matches for you if you have a little flexibiilty in your criteria!"
   try_more = yes_no("Do you want to keep looking for cars?")
@@ -414,6 +418,7 @@ end
 #------------------------------Body of the code------------------------------
 
 
+#setting up the inventory.
 car_lot = []
 tesla = {ID: 1001,name: "Tesla", model: "Model X", year: 2017, is_electric: true, price: 45000, color: "black"}
 jeep = {ID: 1002,name: "Jeep", model: "Grand Cherokee", year: 2004, is_electric: false, price: 37000, color: "white"}
@@ -421,6 +426,10 @@ porsche = {ID: 1003,name: "Porsche", model: "Speedster", year: 1955, is_electric
 ford = {ID: 1004,name: "Ford", model: "Fusion", year: 2003, is_electric: false, price: 18000, color: "red"}
 toyota = {ID: 1005, name: "Toyota", model: "Prius", year: 2010, is_electric: true, price: 24000, color: "silver"}
 
+
+
+
+#Code technically starts here.
 car_lot.push(tesla, jeep, porsche, ford, toyota)
 
 user_criteria = {}
