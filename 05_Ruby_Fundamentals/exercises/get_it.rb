@@ -15,11 +15,63 @@ require 'typhoeus'#library that faciltates http requests
 require 'pry'
 require 'pry-byebug'
 require 'json'
+require 'csv'
 
 def connect_to_api(url)
   response = Typhoeus.get(url)
   JSON.parse(response.body)
 end
 
+
+def print_reddit_stories(story_hash)
+  story_hash.each do |story|
+    puts "Title: #{story[:title]}"
+    puts "Upvotes: #{story[:upvotes]}"
+    puts "Category: #{story[:category]}"
+    puts ""
+  end
+end
+
+def stories_hash(json_output)
+  children = json_output["data"]["children"]
+  stories = []
+
+  children.each do |story|
+    story_hash={}
+    story_hash[:title] = story["data"]["title"]
+    story_hash[:upvotes] = story["data"]["ups"]
+    story_hash[:category] = story["data"]["subreddit"]
+    stories.push(story_hash)
+    #binding.pry
+  end
+  return stories
+end
+
+
+
+
+def to_csv(story_hash)
+  CSV.open("output_file.csv", "wb") do |csv|
+    story_hash.each do |story|
+      csv << ["Title:", story[:title]]
+      csv << ["Upvotes:", story[:upvotes]]
+      csv << ["Category:", story[:category]]
+      csv << [" "]
+    end
+  end
+end
+
+
+
+
 reddit_url ='http://www.reddit.com/.json'
 reddit_json_response = connect_to_api(reddit_url)
+
+hash = stories_hash(reddit_json_response)
+print_reddit_stories(hash)
+to_csv(hash)
+
+
+
+#children is an array of hashes
+#the first child, the hash has 2 keys. 1 is kind, 1 is data, which contains many more hashes.
