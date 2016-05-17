@@ -8,12 +8,13 @@ require 'pry-byebug'
 class Person
 
 #creates getter && setter methods for each attribute
+#reading the book! getter and setter methods for each attribute.
 attr_accessor :name, :age, :home_town
 
 #instance_factory to support creating a new person using Person.new
   def initialize(name, age, home_town)
     @name = name
     @age = age
-    @home = home
+    @home = home_town
   end
 end
