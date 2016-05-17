@@ -30,6 +30,7 @@ class Robot
   attr_accessor :name, :type, :level, :experience, :attack_ranged, :attack_melee, :defense, :flight, :sprit_power, :max_health, :empathy, :variance, :temp_health, :temp_ranged, :temp_melee, :temp_sprit, :temp_defense
 
  #instance_factory to support creating a new robot using Robot.new
+<<<<<<< HEAD
   def initialize(name,type)
     @name = name
     @type = type
@@ -77,6 +78,12 @@ class Robot
 
   def make_large_variance
     rand(21)-10
+=======
+  def initialize(name,origin,type="model_x")
+    @name = name
+    @type = nil
+    @origin = origin
+>>>>>>> 95cf740bdcdd9b268e3873a8bedec5a95f529e56
   end
 
 
@@ -184,6 +191,7 @@ class Robot
 
   end
 
+<<<<<<< HEAD
   def battle_loop(me, enemy)
     attack = choose_attack
     puts "#{name} used the #{attack} attack!"
@@ -203,6 +211,11 @@ class Robot
 
   #I calculate result to stats to each bot
 
+=======
+  #instance methods can only be called by instances of a class
+  def empathy
+    puts "I am #{name}. I have empathy."
+>>>>>>> 95cf740bdcdd9b268e3873a8bedec5a95f529e56
   end
 
 

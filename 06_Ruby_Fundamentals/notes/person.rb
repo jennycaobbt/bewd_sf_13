@@ -1,6 +1,7 @@
 require 'pry'
 require 'pry-byebug'
 
+<<<<<<< HEAD
 
 class Person
   #initialize is the constructor
@@ -25,10 +26,23 @@ class Person
 
 
 
+=======
+class Person
+  #getter & setter properties
+  attr_accessor :name, :age, :home_town
+
+  def initialize(name,age,home_town)
+    @name = name
+    @age = age
+    @home_town = home_town
+  end
+
+>>>>>>> 95cf740bdcdd9b268e3873a8bedec5a95f529e56
   def coding_skills
     if home_town == "San Francisco"
       "I have coding skills"
     else
+<<<<<<< HEAD
       "I have been deprived of coding skills"
     end
   end
@@ -40,10 +54,19 @@ class Person
   #self means it's a class method
   def self.assess_skills(people)
     people.each do |person|
+=======
+      "I have been deprived!"
+    end
+  end
+
+  def self.assess_skills(people)
+    people.each do |person|pe
+>>>>>>> 95cf740bdcdd9b268e3873a8bedec5a95f529e56
       puts person.coding_skills
     end
   end
 
+<<<<<<< HEAD
 
 end
 
@@ -71,3 +94,16 @@ assess_skills(people)
 #class method, method that can be called outside of the class and cannot be called by an instance of itself.
 #method that has more wholistic jobs. Intract with other classes.
 #car.create.
+=======
+  def to_s
+    "Hey! I am a person. My name is #{name}. I am from #{home_town}!"
+  end
+end
+
+person = Person.new("Jane", 97, "San Francisco")
+person1 = Person.new("Kisha", 97, "Brooklyn")
+person2 = Person.new("Jane", 97, "San Francisco")
+people = [person, person1, person2]
+
+Person.assess_skills(people)
+>>>>>>> 95cf740bdcdd9b268e3873a8bedec5a95f529e56
