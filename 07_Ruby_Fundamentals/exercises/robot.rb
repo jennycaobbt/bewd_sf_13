@@ -11,7 +11,7 @@ class Robot
   attr_accessor :name, :type, :origin
 
  #instance_factory to support creating a new robot using Robot.new
-  def initialize(name,type, origin)
+  def initialize(name, origin, type = "beta")
     @name = name
     @type = type
     @origin = origin
@@ -30,6 +30,7 @@ class Robot
 
   #this is an instance method
   def flying_skills
+    puts "I am #{name}, I have flying skills"
   end
 
   def laser_fighting_skills

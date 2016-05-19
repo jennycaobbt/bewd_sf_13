@@ -29,6 +29,15 @@ class Thermostat
     end
   end
 
+  #Takes an array of temps and target temps, make instances out of them and calibrate them.
+    def self.detect_temperature(all_temps, target_temp)
+      all_temps.each do |temp|
+        instance = Thermostat.new(temp, target_temp)
+        instance.calibrate_temp
+      end
+    end
+
+private
 #This increases the temperature until it reaches the target temp.
   def increase_temp
     puts "It's only #{current_temp} degrees! Let's turn on the heater!".yellow
@@ -64,13 +73,7 @@ class Thermostat
   end
 
 
-#Takes an array of temps and target temps, make instances out of them and calibrate them.
-  def self.detect_temperature(all_temps, target_temp)
-    all_temps.each do |temp|
-      instance = Thermostat.new(temp, target_temp)
-      instance.calibrate_temp
-    end
-  end
+
 end
 
 #The temperature is being read externally somewhere, so let's just create an array of those readings
@@ -82,3 +85,6 @@ all_temps = [45,65,85,95, 66, 99, 75, 12, 22, 45, 65, 75, 70, 100, 10, 52, 22]
 target_temp = 75
 
 Thermostat.detect_temperature(all_temps, target_temp)
+
+#private methods are methods the instance doesn't have access to. Everything that's under private is private.
+#The only place this method works is inside the method.
