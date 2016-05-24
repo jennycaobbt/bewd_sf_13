@@ -13,7 +13,7 @@ require_relative 'apartment.rb'
        #Using the apartment.rb file to create an instance of each
 
 #sample_apartment_url 'http://sfbay.craiglist.org/search/sfc/apa'
-def scrape(url)
+def scrape(url, name, min_price, max_price)
 
   scrape = Mechanize.new #creates unique IDs of everything on the page. Creates instance of everytyig on page.
   scraper = scrape.history_added = Proc.new { sleep 1.0 }
@@ -26,9 +26,9 @@ def scrape(url)
     #finding all data within searchform area of the view layer
     form = page.form_with(id: 'searchform') do |s| #zeroing in on input field.
       #assigning new values to query, min_price, and max_price.
-      s['query'] = "Loft" #name
-      s['min_price'] = 1000 #Hashes.
-      s['max_price'] = 6000
+      s['query'] = name #name
+      s['min_price'] = min_price.to_i #Hashes.
+      s['max_price'] = max_price.to_i
     end
     data = form.submit #look for submit, how does it know which one to click?
     #submitting search request. Submit the data of the form.
@@ -79,4 +79,11 @@ end
 
 
 url = "http://sfbay.craiglist.org/search/sfc/apa"
-scrape(url)
+
+puts "Please enter what you want to search for"
+name = gets.strip
+puts "Please enter your minimum price"
+min_price = gets.strip
+puts "Please enter your maximum price"
+max_price = gets.strip
+scrape(url, name, min_price, max_price)
