@@ -1,6 +1,7 @@
 require 'pry'
 require 'pry-byebug'
 
+<<<<<<< HEAD
 #create an apartment class using OOP principles
 
 class Apartment
@@ -33,5 +34,15 @@ class Apartment
     end
 
     return price_total/array.length
+=======
+class Apartment
+  attr_accessor :name, :url, :price, :neighborhood
+
+  def initialize(name,url,price,neighborhood)
+    @name = name
+    @url = url
+    @price = price
+    @neighborhood = neighborhood
+>>>>>>> 94deb58b44f79b19c895cafd9592b7b9c62e5494
   end
 end
